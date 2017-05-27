@@ -57,7 +57,7 @@ def build_cross_validation_sets(data, k):
     # [df1, df2, df3,...dfi,...dfk] with each dfi repersenting the ith group in k total groups
     k_df = [build_group_df(data, group) for group in k_groups]
     # build a list [(features, target) for each df]
-    k_df_split = [(data.iloc[:,3:-1], data.iloc[:, -1:][TARGET_COL]) for data in k_df]
+    k_df_split = [(data.iloc[:,4:-1], data.iloc[:, -1:][TARGET_COL]) for data in k_df]
 
     return k_df_split
 
