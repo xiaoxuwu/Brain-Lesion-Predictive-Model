@@ -1,3 +1,4 @@
+import pandas as pd
 # manifest constants
 TARGET_COL = 622
 FEATURE = 0
