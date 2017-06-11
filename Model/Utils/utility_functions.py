@@ -1,4 +1,8 @@
 import pandas as pd
+import random
+import itertools
+import numpy as np
+from sklearn.utils import shuffle
 # manifest constants
 TARGET_COL = 622
 FEATURE = 0
@@ -21,12 +25,7 @@ def part_list(lst, n):
         out:
             partitioned list
     """
-    parts, rest = divmod(len(lst), n)
-    lstiter = iter(lst)
-    for j in xrange(n):
-        plen = len(lst)/n + (1 if rest > 0 else 0)
-        rest -= 1
-        yield list(itertools.islice(lstiter, plen))
+    return [lst[-(-len(lst)*i//n):-(-len(lst)*(i+1)//n)] for i in range(n)]
 
 def build_group_df(data, patients):
     """
@@ -78,18 +77,14 @@ def cross_validate(model, data, k = 5):
     # get split data
     k_df_split = build_cross_validation_sets(data, k)
 
-    for (i, (X, y)) in enumerate(k_df_split):
+    for (i, (X_test, y_test)) in enumerate(k_df_split):
         # get all dfs not k
         non_kth_group = k_df_split[:]
         del non_kth_group[i]
 
-        # build x and y train data
-        X_train = pd.concat([data[FEATURE] for data in non_kth_group])
-        y_train = pd.concat([data[TARGET] for data in non_kth_group])
-
-        # build x and y test data
-        X_test = X
-        y_test = y
+        # build x and y train data, and shuffle
+        X_train, y_train = shuffle(pd.concat([data[FEATURE] for data in non_kth_group]), \
+        pd.concat([data[TARGET] for data in non_kth_group]))
 
         # train model on non_kth_group
         model.fit(X_train, y_train)
