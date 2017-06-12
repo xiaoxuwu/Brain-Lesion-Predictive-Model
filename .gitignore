@@ -1,3 +1,6 @@
 Data
-ensemble_model/Wenlong/10k*
-ensemble_model/Wenlong/*.pyc
+Model/Wenlong/10k*
+Model/Wenlong/*.pyc
+Model/Wenlong/*.csv
+Model/Wenlong/*.h5
+Model/Wenlong/*.ipynb_checkpoints
